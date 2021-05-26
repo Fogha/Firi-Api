@@ -26,7 +26,7 @@ router.get('/user/:id', requireLogin, (req, res) => {
 router.put('/add-favorite', requireLogin, (req, res) => {
 
   User.findByIdAndUpdate(req.user._id, {
-    $push: { favorites: req.business._id }
+    $push: { favorites: req.user._id }
   }, { new: true }).select("-password").then(result => {
     res.json(result)
   }).catch(err => {

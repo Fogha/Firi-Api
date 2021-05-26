@@ -44,8 +44,8 @@ router.post('/signup',(req,res)=>{
                 //     html:"<h1>welcome to instagram</h1>"
                 // })
                 const token = jwt.sign({ _id: user._id }, JWT_SECRET)
-                const { _id, name, email, followers, following, pic } = user
-                res.json({ token, user: { _id, name, email, followers, following, pic } })
+                const { _id, name, email, favorites, location, pic } = user
+                res.json({ token, user: { _id, name, email, favorites, location, pic } })
                 res.json({message:"user created successfully"})
             })
             .catch(err=>{
@@ -75,8 +75,8 @@ router.post('/signin',(req,res)=>{
             if(doMatch){
                 // res.json({message:"successfully signed in"})
                const token = jwt.sign({_id:savedUser._id},JWT_SECRET)
-               const {_id,name,email,followers,following,pic} = savedUser
-               res.json({token,user:{_id,name,email,followers,following,pic}})
+               const {_id,name,email,favorites,location,pic} = savedUser
+               res.json({token,user:{_id,name,email,favorites,pic,location}})
             }
             else{
                 return res.status(422).json({error:"Invalid Email or password"})
@@ -143,3 +143,5 @@ router.post('/new-password',(req,res)=>{
 
 
 module.exports = router
+
+
