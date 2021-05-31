@@ -37,12 +37,6 @@ router.post('/signup',(req,res)=>{
     
             user.save()
             .then(user=>{
-                // transporter.sendMail({
-                //     to:user.email,
-                //     from:"no-reply@insta.com",
-                //     subject:"signup success",
-                //     html:"<h1>welcome to instagram</h1>"
-                // })
                 const token = jwt.sign({ _id: user._id }, JWT_SECRET)
                 const { _id, name, email, favorites, location, pic } = user
                 res.json({ token, user: { _id, name, email, favorites, location, pic } })
@@ -89,34 +83,16 @@ router.post('/signin',(req,res)=>{
 })
 
 
-router.post('/reset-password',(req,res)=>{
-     crypto.randomBytes(32,(err,buffer)=>{
-         if(err){
-             console.log(err)
-         }
-         const token = buffer.toString("hex")
-         User.findOne({email:req.body.email})
-         .then(user=>{
-             if(!user){
-                 return res.status(422).json({error:"User dont exists with that email"})
-             }
-             user.resetToken = token
-             user.expireToken = Date.now() + 3600000
-             user.save().then((result)=>{
-                 transporter.sendMail({
-                     to:user.email,
-                     from:"no-replay@Firi.com",
-                     subject:"password reset",
-                     html:`
-                     <p>You requested for password reset</p>
-                     <h5>click in this <a href="${EMAIL}/reset/${token}">link</a> to reset password</h5>
-                     `
-                 })
-                 res.json({message:"check your email"})
-             })
-
-         })
-     })
+router.post('/reset-password', (req, res) => {
+  User.findOne({ email: req.body.email })
+    .then(user => {
+      if (user) {
+        return res.status(200).json({ userFound: true })
+      }
+      return res.status(422)
+    }).catch(err => {
+      return res.status(404).json({ error: "User not found" })
+    })
 })
 
 
@@ -133,7 +109,7 @@ router.post('/new-password',(req,res)=>{
            user.resetToken = undefined
            user.expireToken = undefined
            user.save().then((saveduser)=>{
-               res.json({message:"password updated success"})
+               res.status(200).json({message:"password updated success"})
            })
         })
     }).catch(err=>{

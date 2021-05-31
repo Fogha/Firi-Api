@@ -23,22 +23,20 @@ router.get('/user/:id', requireLogin, (req, res) => {
     })
 })
 
-router.put('/add-favorite', requireLogin, (req, res) => {
-
-  User.findByIdAndUpdate(req.user._id, {
-    $push: { favorites: req.user._id }
-  }, { new: true }).select("-password").then(result => {
+router.put('/add-favorite', (req, res) => {
+  User.findByIdAndUpdate(req.body.userId, {
+    $push: { favorites: req.body.businessId }
+  }, { new: true, useFindAndModify: false }).select("-password").then(result => {
     res.json(result)
   }).catch(err => {
     return res.status(422).json({ error: err })
   })
-  
 })
 
-router.put('/remove-favorite', requireLogin, (req, res) => {  
-  User.findByIdAndUpdate(req.user._id, {
-    $pull: { favorites: req.business.unfollowId }
-  }, { new: true }).select("-password").then(result => {
+router.put('/remove-favorite', (req, res) => {  
+  User.findByIdAndUpdate(req.body.userId, {
+    $pull: { favorites: req.body.businessId }
+  }, { new: true, useFindAndModify: false  }).select("-password").then(result => {
     res.json(result)
   }).catch(err => {
     return res.status(422).json({ error: err })
