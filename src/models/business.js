@@ -29,6 +29,10 @@ const BusinessSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  reviews: {
+    type: Array,
+    require: true,
+  },
   resetToken: String,
   expireToken: Date,
   pic: {

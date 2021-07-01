@@ -27,16 +27,18 @@ router.put('/add-favorite', (req, res) => {
   User.findByIdAndUpdate(req.body.userId, {
     $push: { favorites: req.body.businessId }
   }, { new: true, useFindAndModify: false }).select("-password").then(result => {
+    console.log(result);
     res.json(result)
   }).catch(err => {
     return res.status(422).json({ error: err })
   })
 })
 
-router.put('/remove-favorite', (req, res) => {  
+router.put('/remove-favorite', (req, res) => {
   User.findByIdAndUpdate(req.body.userId, {
     $pull: { favorites: req.body.businessId }
-  }, { new: true, useFindAndModify: false  }).select("-password").then(result => {
+  }, { new: true, useFindAndModify: false }).select("-password").then(result => {
+    console.log(result);
     res.json(result)
   }).catch(err => {
     return res.status(422).json({ error: err })
@@ -62,7 +64,6 @@ router.post('/search-users', (req, res) => {
     }).catch(err => {
       console.log(err)
     })
-
 })
 
 module.exports = router
