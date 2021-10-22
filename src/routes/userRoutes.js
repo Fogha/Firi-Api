@@ -66,4 +66,20 @@ router.post('/search-users', (req, res) => {
     })
 })
 
+router.patch('/update-profile/:id', (req, res) => {
+  let { name, email, pic } = req.body;
+  User.findByIdAndUpdate({_id: req.params.id}, {
+    $set: {
+      name,
+      email,
+      pic
+    }
+  }, { new: true },
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: "pic cannot post" })
+      }
+      res.json(result)
+    })
+})
 module.exports = router

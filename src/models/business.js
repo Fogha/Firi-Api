@@ -7,11 +7,11 @@ const BusinessSchema = new mongoose.Schema({
   },
   businessType: {
     type: String,
-    required: true
+    default: ""
   },
   description: {
     type: String,
-    required: true
+    default: ""
   },
   email: {
     type: String,
@@ -19,11 +19,11 @@ const BusinessSchema = new mongoose.Schema({
   },
   location: {
     type: String,
-    required: true
+    default: "Everywhere"
   },
   services: {
     type: Object,
-    required: true
+    default: {}
   },
   password: {
     type: String,
@@ -31,7 +31,11 @@ const BusinessSchema = new mongoose.Schema({
   },
   reviews: {
     type: Array,
-    require: true,
+    default: []
+  },
+  role: {
+    type: String,
+    required: true
   },
   resetToken: String,
   expireToken: Date,

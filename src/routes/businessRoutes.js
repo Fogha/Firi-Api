@@ -36,11 +36,7 @@ router.post('/search-business', (req, res) => {
 })
 
 router.put('/add-review/:id', (req, res) => {
-  let userName = req.body.userName;
-  let review = req.body.review;
-  let userId = req.body.userId;
-  let userImg = req.body.userImg;
-  console.log(userImg);
+  let { userName, review, userId, userImg } = req.body;
   let d = new Date();
   Business.findByIdAndUpdate(req.params.id, {
     $push: {
@@ -63,4 +59,52 @@ router.put('/add-review/:id', (req, res) => {
     })
 })
 
+router.post('/add-product/', (req, res) => {
+  let { name, description, price, category, image, id } = req.body;
+  console.log({ name, description, price, category, image, id });
+  let d = new Date()
+
+  Business.updateOne({ _id: id }, {
+    $push: {
+      "services.services": {
+        name,
+        price,
+        description,
+        category,
+        image,
+        time: `${d.getHours() + ":" + d.getMinutes()}`,
+        date: `${d.getFullYear() + "-" + d.getMonth() + "-" + d.getDay()}`
+      }
+    }
+  }, { new: true, useFindAndModify: false }).select("-password")
+    .then(result => {
+      console.log(result);
+      res.json(result)
+    }).catch(err => {
+      console.log(err);
+      res.status(422).json({ error: err })
+    })
+})
+
+router.patch('/update-business-profile/:id', (req, res) => {
+  console.log(req.body);
+  console.log(req.params.id);
+  let { name, email, pic, type, description, services } = req.body;
+  Business.findByIdAndUpdate({_id: req.params.id}, {
+    $set: {
+      name,
+      email,
+      pic,
+      type,
+      description,
+      'services.list': services
+    }
+  }, { new: true },
+    (err, result) => {
+      if (err) {
+        return res.status(422).json({ error: "pic cannot post" })
+      }
+      res.json(result)
+    })
+})
 module.exports = router;
