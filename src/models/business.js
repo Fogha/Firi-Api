@@ -39,9 +39,9 @@ const BusinessSchema = new mongoose.Schema({
   },
   resetToken: String,
   expireToken: Date,
-  pic: {
+  image: {
     type: String,
-    default: "https://images.pexels.com/photos/718261/pexels-photo-718261.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+    default: "https://icon-library.com/images/business-owner-icon/business-owner-icon-15.jpg"
   }
 })
 

@@ -62,7 +62,7 @@ router.put('/add-review/:id', (req, res) => {
 router.post('/add-product/', (req, res) => {
   let { name, description, price, category, image, id } = req.body;
   console.log({ name, description, price, category, image, id });
-  let d = new Date()
+  let d = new Date() 
 
   Business.updateOne({ _id: id }, {
     $push: {
